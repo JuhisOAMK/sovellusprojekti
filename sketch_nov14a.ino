@@ -16,9 +16,6 @@
 #define screenHeight 128
 #define tileSize 6
 
-int force = 5, gravity = 0.5;
-
-
 const int anag0 = A0;
 const int anog1 = A1;
 const int anog2 = A2;
@@ -47,6 +44,7 @@ void setup() {
   Serial.begin(9600);
   screen.background(255, 255, 255);
   screen.stroke(255, 255, 255);
+  screen.fill(255,255,255);
 
 }
 
@@ -65,19 +63,20 @@ Serial.print("       ");
 Serial.print(inputD);
 Serial.print("\n");
 
-
 int scwidth = screen.width();
 int scheight = screen.height();
-screen.fill(0,0,0);
+
 if (millis() % nelionopeus < 2){
   liiku();
 }
+
 
   
 }
 
 
 void liiku() {
+  
   int A = 0;
   int B = 0;
   int C = 0;
@@ -96,38 +95,38 @@ void liiku() {
 
   if (A > 2500)
   {
-    neliox += nelionsuunx;
-    Serial.print(A);
-    Serial.print(" ");
+    nelionsuuny = -2;
+    nelioy += nelionsuuny;
   }
 
   if (B > 2500)
   {
-    nelioy -= nelionsuuny;
+    neliox -= nelionsuunx;
   }
 
   if (C > 2500)
   {
-    neliox -= nelionsuunx;
+    nelioy -= nelionsuuny;
   }
 
   if (D > 2500)
   {
-    nelioy -= nelionsuuny + force;
+    neliox += nelionsuunx;
     //nelioy -= nelionsuuny;
   }
 
-  if (nelioy > )
+  nelioy += nelionsuuny;
+ /* if (nelioy > )
   {
     nelioy += nelionsuuny - gravity;
   }
-
+*/
   /*
   neliox += nelionsuunx;
   nelioy += nelionsuuny;
   */
 
-  screen.fill(0, 0, 0);
+  screen.fill(255, 255, 255);
 
   if (oldneliox != neliox || oldnelioy != nelioy) {
     screen.rect(oldneliox, oldnelioy, 5, 5);
@@ -140,4 +139,32 @@ void liiku() {
   oldnelioy = nelioy;
   
   
+}
+
+void platform(int x, int y)
+{
+  screen.rect(x, y, 20, 5);
+  if (kontakti(neliox, nelioy, x, y - 3, 20, 5))
+  {
+    nelionsuuny = 0;
+  }
+
+  else
+  {
+    nelionsuuny = 1;
+  }
+}
+
+
+
+
+boolean kontakti(int x, int y, int rectX, int rectY, int rectWidth, int rectHeight)
+{
+  boolean result = false;
+
+  if ((x >= rectX && x <= (rectX + rectWidth)) &&
+      (y >= rectY && y <= (rectY + rectHeight))) {
+        result = true;
+      }
+      return result;
 }
