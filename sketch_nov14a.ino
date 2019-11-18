@@ -42,9 +42,9 @@ TFT screen = TFT(LCD_CS, DC, RESET);
 void setup() {
   screen.begin();
   Serial.begin(9600);
-  screen.background(255, 255, 255);
-  screen.stroke(255, 255, 255);
-  screen.fill(255,255,255);
+  screen.background(0, 255, 0);
+  screen.stroke(255, 255, 2);
+  screen.fill(255,0,0);
 
 }
 
@@ -65,6 +65,9 @@ Serial.print("\n");
 
 int scwidth = screen.width();
 int scheight = screen.height();
+
+
+platforms(111, 80, 70, 100);
 
 if (millis() % nelionopeus < 2){
   liiku();
@@ -141,22 +144,31 @@ void liiku() {
   
 }
 
-void platform(int x, int y)
+void platforms(int x, int y, int a, int b)
 {
   screen.rect(x, y, 20, 5);
+  screen.rect(a, b, 20, 5);
   if (kontakti(neliox, nelioy, x, y - 3, 20, 5))
   {
     nelionsuuny = 0;
   }
 
+  else if (kontakti(neliox, nelioy, a, b - 3, 20, 5))
+  {
+    nelionsuuny = 0;
+  }
+
+
+  
+
   else
   {
     nelionsuuny = 1;
   }
+
+  
+  
 }
-
-
-
 
 boolean kontakti(int x, int y, int rectX, int rectY, int rectWidth, int rectHeight)
 {
